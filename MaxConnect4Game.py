@@ -24,13 +24,13 @@ class maxConnect4Game:
 
     # Output current game status to console
     def printGameBoard(self):
-        print ' -----------------'
+        print(' -----------------')
         for i in range(6):
-            print ' |',
+            print(' |', end=''),
             for j in range(7):
-                print('%d' % self.gameBoard[i][j]),
-            print '| '
-        print ' -----------------'
+                print('%d' % self.gameBoard[i][j], end=''),
+            print('| ')
+        print(' -----------------')
 
     # Output current game status to file
     def printGameBoardToFile(self):
@@ -260,4 +260,3 @@ class maxConnect4Game:
         if (self.gameBoard[2][6] == 2 and self.gameBoard[3][5] == 2 and
                self.gameBoard[4][4] == 2 and self.gameBoard[5][3] == 2):
             self.player2Score += 1
-
