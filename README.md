@@ -1,2 +1,2 @@
 # adversarialSearch
-CSCI 404 Porject 2
+CSCI 404 Project 2
