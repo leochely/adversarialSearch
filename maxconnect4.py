@@ -9,7 +9,7 @@ import sys
 from MaxConnect4Game import *
 
 
-def oneMoveGame(currentGame, next, depth):
+def oneMoveGame(currentGame, depth):
     if currentGame.pieceCount == 42:    # Is the board full already?
         print('BOARD FULL\n\nGame Over!\n')
         sys.exit(0)
@@ -41,7 +41,7 @@ def main(argv):
         print('or: %s one-move [input_file] [output_file] [depth]' % argv[0])
         sys.exit(2)
 
-    game_mode, inFile = argv[1:5]
+    game_mode, inFile = argv[1:3]
 
     if not game_mode == 'interactive' and not game_mode == 'one-move':
         print('%s is an unrecognized game mode' % game_mode)
@@ -74,17 +74,17 @@ def main(argv):
 
     if game_mode == 'interactive':
         # Be sure to pass whatever else you need from the command line
-        next, depth = argv[3:5]
+        next, depth = argv[3:6]
         interactiveGame(currentGame, next, depth)
     else:  # game_mode == 'one-move'
         # Set up the output file
-        outFile, next, depth = argv[3:6]
+        outFile, depth = argv[3:5]
         try:
             currentGame.gameFile = open(outFile, 'w')
         except:
             sys.exit('Error opening output file.')
         # Be sure to pass any other arguments from the command line you might need.
-        oneMoveGame(currentGame, next, depth)
+        oneMoveGame(currentGame, depth)
 
 
 if __name__ == '__main__':
