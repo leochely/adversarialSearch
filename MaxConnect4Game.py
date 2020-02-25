@@ -75,9 +75,10 @@ class maxConnect4Game:
         d = 0
         root = Node((self.gameBoard, false))
         while(d < depth):
-            for node in
+            for node in RenderTree(root):
 
-    # Calculate the number of 4-in-a-row each player has
+                # Calculate the number of 4-in-a-row each player has
+
     def countScore(self):
         self.player1Score = 0
         self.player2Score = 0
