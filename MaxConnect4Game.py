@@ -251,6 +251,7 @@ class maxConnect4Game:
         self.player2Score = 0
         self.maxPlayer = 0
         self.pieceCount = 0
+        self.depth = 0
         self.gameFile = None
         self.MAX, self.MIN = 1000, -1000
 
@@ -291,25 +292,18 @@ class maxConnect4Game:
 
     # The AI section. Currently plays randomly.
     def aiPlay(self):
-        randColumn = random.randrange(0, 7)
-        result = self.playPiece(randColumn)
-        if not result:
-            self.aiPlay()
-        else:
-            print('\n\nmove %d: Player %d, column %d\n' %
-                  (self.pieceCount, self.currentTurn, randColumn + 1))
-            if self.currentTurn == 1:
-                self.currentTurn = 2
-            elif self.currentTurn == 2:
-                self.currentTurn = 1
+        column = self.nextMove()
+        result = self.playPiece(column)
+
+        print('\n\nmove %d: Player %d, column %d\n' %
+              (self.pieceCount, self.currentTurn, column + 1))
 
     # Returns optimal value for current player
-    def getTree(self, depth):
-        root = Node('root', board=self.gameBoard, score=self.MIN)
-        for i in range(depth):
-            for n in PreOrderIter(root, maxlevel=i):
+    def getTree(self):
+        root = Node('root', board=self.gameBoard, score=self.MIN, move=-1)
+        for i in range(self.depth):
+            for n in PreOrderIter(root, maxlevel=self.depth):
                 if len(n.children) == 0:
-                    ('no kids')
                     for j in range(7):
                         tempBoard = deepcopy(n.board)
                         if i % 2 == 0:
@@ -317,22 +311,70 @@ class maxConnect4Game:
                         else:
                             value = self.MAX
                         if playPieceOn(tempBoard, (self.currentTurn + i) % 2 + 1, j):
-                            print('success')
-                            node = Node('{},{}'.format(i, j),
-                                        parent=n, board=tempBoard, score=value)
+                            node = Node('{},{}'.format(i, j), parent=n,
+                                        board=tempBoard, score=value, move=j)
 
         return root
 
     # Implements depth-limited alpha-beta pruning
-    def minimax(self):
-        column = -1
-
+    def nextMove(self):
         # First asign values to the leafs
-        self.getTree()
-        for n in PreOrderIter(root, maxlevel=i):
+        root = self.getTree()
+        for n in PreOrderIter(root, maxlevel=self.depth):
             if len(n.children) == 0:
-                n.value = evaluateBoard(n.board)
-        return column
+                n.value = evaluateBoard(n.board, self.depth % 2 == 0)
+
+        # Finds the best path
+        score = self.minimax(root, True, self.MIN, self.MAX)
+
+        # Returns the next move
+        for n in root.children:
+            if n.score == score:
+                return n.move
+        print(root.children)
+        return
+
+    def minimax(self, node, maximizingPlayer,
+                alpha, beta):
+
+        # Terminating condition. i.e
+        # leaf node is reached
+        if len(node.children) == 0:
+            return node.score
+
+        if maximizingPlayer:
+
+            best = self.MIN
+
+            # Recur for left and right children
+            for n in node.children:
+
+                val = self.minimax(n, False, alpha, beta)
+                best = max(best, val)
+                alpha = max(alpha, best)
+
+                # Alpha Beta Pruning
+                if beta <= alpha:
+                    break
+
+            return best
+
+        else:
+            best = self.MAX
+
+            # Recur for left and
+            # right children
+            for n in node.children:
+
+                val = self.minimax(n, False, alpha, beta)
+                best = min(best, val)
+                beta = min(beta, best)
+
+                # Alpha Beta Pruning
+                if beta <= alpha:
+                    break
+
+            return best
 
     # Calculate the number of 4-in-a-row each player has
     def countScore(self):

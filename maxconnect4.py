@@ -10,7 +10,7 @@ from MaxConnect4Game import *
 
 
 def oneMoveGame(currentGame, depth):
-    if currentGame.pieceCount == 42:    # Is the board full already?
+    if currentGame.isOver():    # Is the board full already?
         print('BOARD FULL\n\nGame Over!\n')
         sys.exit(0)
 
@@ -28,8 +28,36 @@ def oneMoveGame(currentGame, depth):
 
 
 def interactiveGame(currentGame, next, depth):
-    # Fill me in
-    sys.exit('Interactive mode is currently not implemented')
+    currentGame.depth = int(depth)
+    while True:
+        print('Game state:')
+        currentGame.printGameBoard()
+
+        if next == 'computer-next':
+            currentGame.aiPlay()
+
+            print('Game state after move:')
+            currentGame.printGameBoard()
+            currentGame.countScore()
+            print('Score: Player 1 = %d, Player 2 = %d\n' %
+                  (currentGame.player1Score, currentGame.player2Score))
+
+            if currentGame.isOver():    # Is the board full already?
+                print('BOARD FULL\n\nGame Over!\n')
+                sys.exit(0)
+
+            column = int(input('Input your move:\n'))
+            currentGame.playPiece(column - 1)
+
+            print('Game state after move:')
+            currentGame.printGameBoard()
+
+            currentGame.countScore()
+            print('Score: Player 1 = %d, Player 2 = %d\n' %
+                  (currentGame.player1Score, currentGame.player2Score))
+            if currentGame.isOver():    # Is the board full already?
+                print('BOARD FULL\n\nGame Over!\n')
+                sys.exit(0)
 
 
 def main(argv):
