@@ -4,10 +4,20 @@
 # code provided by Vassilis Athitsos
 # Written to be Python 2.4 compatible for omega
 
-from copy import deepcopy
-from anytree import Node, RenderTree
 import random
 import sys
+from copy import deepcopy
+
+from anytree import Node, PreOrderIter, RenderTree
+
+
+def playPieceOn(gameBoard, currentTurn, column):
+    if not gameBoard[0][column]:
+        for i in range(5, -1, -1):
+            if not gameBoard[i][column]:
+                gameBoard[i][column] = currentTurn
+                return True
+    return False
 
 
 class maxConnect4Game:
@@ -18,7 +28,7 @@ class maxConnect4Game:
         self.player2Score = 0
         self.pieceCount = 0
         self.gameFile = None
-        random.seed()
+        self.MAX, self.MIN = 1000, -1000
 
     # Count the number of pieces already played
     def checkPieceCount(self):
@@ -52,7 +62,8 @@ class maxConnect4Game:
                 if not self.gameBoard[i][column]:
                     self.gameBoard[i][column] = self.currentTurn
                     self.pieceCount += 1
-                    return 1
+                    return True
+        return False
 
     # The AI section. Currently plays randomly.
     def aiPlay(self):
@@ -68,17 +79,25 @@ class maxConnect4Game:
             elif self.currentTurn == 2:
                 self.currentTurn = 1
 
-    self.MAX, self.MIN = 1000, -1000
-
     # Returns optimal value for current player
     def getTree(self, depth):
-        d = 0
-        root = Node((self.gameBoard, false))
-        while(d < depth):
-            for node in RenderTree(root):
+        root = Node('root', board=self.gameBoard)
+        for i in range(depth):
+            for n in PreOrderIter(root, maxlevel=i):
+                print(n)
+                if len(n.children) == 0:
+                    ('no kids')
+                    for j in range(7):
+                        print(j)
+                        tempBoard = deepcopy(n.board)
+                        if playPieceOn(tempBoard, (self.currentTurn + i) % 2 + 1, j):
+                            print('success')
+                            node = Node('{},{}'.format(i, j),
+                                        parent=n, board=tempBoard)
 
-                # Calculate the number of 4-in-a-row each player has
+        return root
 
+    # Calculate the number of 4-in-a-row each player has
     def countScore(self):
         self.player1Score = 0
         self.player2Score = 0

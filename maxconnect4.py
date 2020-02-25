@@ -5,10 +5,11 @@
 # Written to be Python 2.4 compatible for omega
 
 import sys
+
 from MaxConnect4Game import *
 
 
-def oneMoveGame(currentGame):
+def oneMoveGame(currentGame, next, depth):
     if currentGame.pieceCount == 42:    # Is the board full already?
         print('BOARD FULL\n\nGame Over!\n')
         sys.exit(0)
