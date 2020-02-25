@@ -4,7 +4,8 @@
 # code provided by Vassilis Athitsos
 # Written to be Python 2.4 compatible for omega
 
-from copy import copy
+from copy import deepcopy
+from anytree import Node, RenderTree
 import random
 import sys
 
@@ -66,6 +67,15 @@ class maxConnect4Game:
                 self.currentTurn = 2
             elif self.currentTurn == 2:
                 self.currentTurn = 1
+
+    self.MAX, self.MIN = 1000, -1000
+
+    # Returns optimal value for current player
+    def getTree(self, depth):
+        d = 0
+        root = Node((self.gameBoard, false))
+        while(d < depth):
+            for node in
 
     # Calculate the number of 4-in-a-row each player has
     def countScore(self):
