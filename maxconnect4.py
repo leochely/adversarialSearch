@@ -46,6 +46,7 @@ def interactiveGame(currentGame, next, depth):
                 print('BOARD FULL\n\nGame Over!\n')
                 sys.exit(0)
 
+            currentGame.changePlayer()
             column = int(input('Input your move:\n'))
             currentGame.playPiece(column - 1)
 
@@ -58,6 +59,8 @@ def interactiveGame(currentGame, next, depth):
             if currentGame.isOver():    # Is the board full already?
                 print('BOARD FULL\n\nGame Over!\n')
                 sys.exit(0)
+
+            currentGame.changePlayer()
 
 
 def main(argv):

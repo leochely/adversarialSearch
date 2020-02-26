@@ -280,6 +280,12 @@ class maxConnect4Game:
             self.gameFile.write(''.join(str(col) for col in row) + '\r\n')
         self.gameFile.write('%s\r\n' % str(self.currentTurn))
 
+    def changePlayer(self):
+        if self.currentTurn == 1:
+            self.currentTurn = 2
+        else:
+            self.currentTurn = 1
+
     # Place the current player's piece in the requested column
     def playPiece(self, column):
         if not self.gameBoard[0][column]:
