@@ -10,6 +10,7 @@ from MaxConnect4Game import *
 
 
 def oneMoveGame(currentGame, depth):
+    currentGame.depth = int(depth)
     if currentGame.isOver():    # Is the board full already?
         print('BOARD FULL\n\nGame Over!\n')
         sys.exit(0)
@@ -64,41 +65,41 @@ def interactiveGame(currentGame, next, depth):
                 sys.exit(0)
 
             currentGame.changePlayer()
-            
-        #Human Player going first
-        column = int(input('Input your move:\n'))
-        test = currentGame.playPiece(column - 1)
-        while not test:
+
+        # Human Player going first
+        else:
             column = int(input('Input your move:\n'))
             test = currentGame.playPiece(column - 1)
+            while not test:
+                column = int(input('Input your move:\n'))
+                test = currentGame.playPiece(column - 1)
 
-        print('Game state after move:')
-        currentGame.printGameBoard()
+            print('Game state after move:')
+            currentGame.printGameBoard()
+            currentGame.countScore()
 
-        currentGame.countScore()
-        print('Score: Player 1 = %d, Player 2 = %d\n' %
-                (currentGame.player1Score, currentGame.player2Score))
-        if currentGame.isOver():    # Is the board full already?
-            print('BOARD FULL\n\nGame Over!\n')
-            sys.exit(0)
+            print('Score: Player 1 = %d, Player 2 = %d\n' %
+                  (currentGame.player1Score, currentGame.player2Score))
+            if currentGame.isOver():    # Is the board full already?
+                print('BOARD FULL\n\nGame Over!\n')
+                sys.exit(0)
 
-        currentGame.changePlayer()
+            currentGame.changePlayer()
 
-        currentGame.aiPlay()
+            currentGame.aiPlay()
 
-        print('Game state after move:')
-        currentGame.printGameBoard()
-        currentGame.countScore()
-        print('Score: Player 1 = %d, Player 2 = %d\n' %
-                (currentGame.player1Score, currentGame.player2Score))
+            print('Game state after move:')
+            currentGame.printGameBoard()
+            currentGame.countScore()
+            print('Score: Player 1 = %d, Player 2 = %d\n' %
+                  (currentGame.player1Score, currentGame.player2Score))
 
-        if currentGame.isOver():    # Is the board full already?
-            print('BOARD FULL\n\nGame Over!\n')
-            sys.exit(0)
+            if currentGame.isOver():    # Is the board full already?
+                print('BOARD FULL\n\nGame Over!\n')
+                sys.exit(0)
 
-        currentGame.changePlayer()
-            
-        
+            currentGame.changePlayer()
+
 
 def main(argv):
     # Make sure we have enough command-line arguments
