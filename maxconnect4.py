@@ -48,7 +48,10 @@ def interactiveGame(currentGame, next, depth):
 
             currentGame.changePlayer()
             column = int(input('Input your move:\n'))
-            currentGame.playPiece(column - 1)
+            test = currentGame.playPiece(column - 1)
+            while not test:
+                column = int(input('Input your move:\n'))
+                test = currentGame.playPiece(column - 1)
 
             print('Game state after move:')
             currentGame.printGameBoard()
@@ -61,7 +64,41 @@ def interactiveGame(currentGame, next, depth):
                 sys.exit(0)
 
             currentGame.changePlayer()
+            
+        #Human Player going first
+        column = int(input('Input your move:\n'))
+        test = currentGame.playPiece(column - 1)
+        while not test:
+            column = int(input('Input your move:\n'))
+            test = currentGame.playPiece(column - 1)
 
+        print('Game state after move:')
+        currentGame.printGameBoard()
+
+        currentGame.countScore()
+        print('Score: Player 1 = %d, Player 2 = %d\n' %
+                (currentGame.player1Score, currentGame.player2Score))
+        if currentGame.isOver():    # Is the board full already?
+            print('BOARD FULL\n\nGame Over!\n')
+            sys.exit(0)
+
+        currentGame.changePlayer()
+
+        currentGame.aiPlay()
+
+        print('Game state after move:')
+        currentGame.printGameBoard()
+        currentGame.countScore()
+        print('Score: Player 1 = %d, Player 2 = %d\n' %
+                (currentGame.player1Score, currentGame.player2Score))
+
+        if currentGame.isOver():    # Is the board full already?
+            print('BOARD FULL\n\nGame Over!\n')
+            sys.exit(0)
+
+        currentGame.changePlayer()
+            
+        
 
 def main(argv):
     # Make sure we have enough command-line arguments

@@ -288,12 +288,17 @@ class maxConnect4Game:
 
     # Place the current player's piece in the requested column
     def playPiece(self, column):
+        print('in play piece')
         if not self.gameBoard[0][column]:
             for i in range(5, -1, -1):
                 if not self.gameBoard[i][column]:
+                    print(i,  ' ', column)
                     self.gameBoard[i][column] = self.currentTurn
                     self.pieceCount += 1
                     return True
+
+        #Notifies the player that he/she cannot place a piece in a full column
+        print('\n Invalid move: This column is full.')
         return False
 
     # The AI section. Currently plays randomly.
