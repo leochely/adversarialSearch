@@ -11,6 +11,7 @@ from copy import deepcopy
 from anytree import Node, PreOrderIter, RenderTree
 
 
+# Play a piece on a child board
 def playPieceOn(gameBoard, currentTurn, column):
     if not gameBoard[0][column]:
         for i in range(5, -1, -1):
@@ -20,11 +21,13 @@ def playPieceOn(gameBoard, currentTurn, column):
     return False
 
 
+# Check piece count on a child board
 def checkPieceCountOn(gameBoard):
     pieceCount = sum(
         1 for row in gameBoard for piece in row if piece)
 
 
+# Assigns a score to a board
 def evaluateBoard(gameBoard, maxPlayer):
     if checkPieceCountOn(gameBoard):
         player1Score = 0
@@ -280,6 +283,7 @@ class maxConnect4Game:
             self.gameFile.write(''.join(str(col) for col in row) + '\r\n')
         self.gameFile.write('%s\r\n' % str(self.currentTurn))
 
+    # Switches to the next player
     def changePlayer(self):
         if self.currentTurn == 1:
             self.currentTurn = 2
@@ -297,7 +301,7 @@ class maxConnect4Game:
                     self.pieceCount += 1
                     return True
 
-        #Notifies the player that he/she cannot place a piece in a full column
+        # Notifies the player that he/she cannot place a piece in a full column
         print('\n Invalid move: This column is full.')
         return False
 
@@ -309,7 +313,7 @@ class maxConnect4Game:
         print('\n\nmove %d: Player %d, column %d\n' %
               (self.pieceCount, self.currentTurn, column + 1))
 
-    # Returns optimal value for current player
+    # Returns the root of the moves tree
     def getTree(self):
         root = Node('root', board=self.gameBoard, score=self.MIN, move=-1)
         for i in range(self.depth):
@@ -345,6 +349,7 @@ class maxConnect4Game:
         print(root.children)
         return
 
+    # Depth limited alpha-beta pruning
     def minimax(self, node, maximizingPlayer,
                 alpha, beta):
 
