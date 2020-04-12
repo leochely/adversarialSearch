@@ -1,6 +1,5 @@
 # Adversarial Search
 CSCI 404 Project 2  
-(This file is saved as .txt to comply with the project requirements but is written in Markdown. It can be previewed with https://markdownlivepreview.com/ for an easier lecture)
 
 ## 1. Names and CWID
 David An 10727498
